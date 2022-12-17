@@ -593,6 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536d09f795fd1b946ae3aeb5d81377a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 491331513}
   speed: 5
   jumpspeed: 2
   move: {x: 0, y: 0, z: 0}
