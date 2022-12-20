@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playermovement : MonoBehaviour
 {
     private CharacterController characterController;
-
+    
     public Animator animator;
+    public RuntimeAnimatorController anim1;
+    public RuntimeAnimatorController anim2;
+    public RuntimeAnimatorController anim3;
+    public RuntimeAnimatorController anim4;
+    public RuntimeAnimatorController anim5;
+    public RuntimeAnimatorController anim6;
+    
+    private int charselec = 1;
     public float speed = 5f;
     public float jumpspeed = 5f;
     [SerializeField]
@@ -21,6 +30,28 @@ public class playermovement : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+
+        charselec = PlayerPrefs.GetInt("CharacterSelected");
+        if (charselec == 1)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim1 as RuntimeAnimatorController;
+        } else if(charselec == 2)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim2 as RuntimeAnimatorController;
+        } else if(charselec == 3)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+        } else if (charselec == 4)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim4 as RuntimeAnimatorController;
+        } else if (charselec == 5)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim5 as RuntimeAnimatorController;
+        } else if (charselec == 6)
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim6 as RuntimeAnimatorController;
+        }
+
     }
 
     // Update is called once per frame
@@ -81,5 +112,47 @@ public class playermovement : MonoBehaviour
     void FixedUpdate()
     {
         characterController.Move(move*Time.deltaTime*speed);
+    }
+
+    //para charselec scene
+    public void confirmselec()
+    {
+        SceneManager.LoadScene("gscene");
+    }
+
+    public void bobbyselec()
+    {
+        charselec = 1;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
+    }
+
+    public void santaselec()
+    {
+        charselec = 2;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
+    }
+
+    public void elfselec()
+    {
+        charselec = 3;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
+    }
+
+    public void frankselec()
+    {
+        charselec = 4;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
+    }
+
+    public void rudolphselec()
+    {
+        charselec = 5;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
+    }
+
+    public void trunksselec()
+    {
+        charselec = 6;
+        PlayerPrefs.SetInt("CharacterSelected", charselec);
     }
 }
