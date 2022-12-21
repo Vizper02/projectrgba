@@ -16,7 +16,7 @@ public class playermovement : MonoBehaviour
     public RuntimeAnimatorController anim6;
     
     private int charselec = 1;
-    public float speed = 5f;
+    public float speed;
     public float jumpspeed = 5f;
     [SerializeField]
     private Vector3 move;
@@ -25,13 +25,17 @@ public class playermovement : MonoBehaviour
     private bool ch = false; 
     private bool cv = false;
     private float yspeed = 0f;
+    private Vector3 scalet;
 
     // Start is called before the first frame update
     void Start()
     {
         characterController = GetComponent<CharacterController>();
 
+        scalet = transform.localScale;
+
         //para seleccionar personaje
+        speed = PlayerPrefs.GetFloat("speed");
         charselec = PlayerPrefs.GetInt("CharacterSelected");
         if (charselec == 1)
         {
@@ -58,6 +62,7 @@ public class playermovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
@@ -74,6 +79,13 @@ public class playermovement : MonoBehaviour
         }
 
         //applymovement
+        if(horizontal < 0f)
+        {
+            transform.localScale = new Vector3(-scalet.x, scalet.y, scalet.z);
+        }else if(horizontal > 0f)
+        {
+            transform.localScale = scalet;
+        }
         move = new Vector3(horizontal, yspeed, vertical);
         
         //animation
@@ -113,47 +125,5 @@ public class playermovement : MonoBehaviour
     void FixedUpdate()
     {
         characterController.Move(move*Time.deltaTime*speed);
-    }
-
-    //para charselec scene
-    public void confirmselec()
-    {
-        SceneManager.LoadScene("gscene");
-    }
-
-    public void bobbyselec()
-    {
-        charselec = 1;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
-    }
-
-    public void santaselec()
-    {
-        charselec = 2;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
-    }
-
-    public void elfselec()
-    {
-        charselec = 3;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
-    }
-
-    public void frankselec()
-    {
-        charselec = 4;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
-    }
-
-    public void rudolphselec()
-    {
-        charselec = 5;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
-    }
-
-    public void trunksselec()
-    {
-        charselec = 6;
-        PlayerPrefs.SetInt("CharacterSelected", charselec);
     }
 }

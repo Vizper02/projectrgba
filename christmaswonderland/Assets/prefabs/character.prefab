@@ -229,7 +229,6 @@ MonoBehaviour:
   anim4: {fileID: 22100000, guid: c8c6b021abd39b84888c1be492335ae1, type: 2}
   anim5: {fileID: 22100000, guid: 633b1f9d896495940bb236e316edc517, type: 2}
   anim6: {fileID: 22100000, guid: 5b68f8a38e4a1db40a9907ed72fd6388, type: 2}
-  charselec: 1
   speed: 5
   jumpspeed: 2
   move: {x: 0, y: 0, z: 0}

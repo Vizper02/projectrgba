@@ -9,7 +9,7 @@ AnimatorOverrideController:
   m_Name: rudolpo
   m_Controller: {fileID: 9100000, guid: 635a8606a85138d40b1b72a897d2892d, type: 2}
   m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 66fbd402cf1a73b4ca5dba11f7121a18, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 64658cf37c4fc5546a4946983270250d, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: a8ca198a39fb9d245b065a69b48bb375, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 691f03c40a9a35940a36e9a5e8f5b20b, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 66fbd402cf1a73b4ca5dba11f7121a18, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 6883535e0bab05447bb6fe1a32076d79, type: 2}
