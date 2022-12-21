@@ -31,6 +31,7 @@ public class playermovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
+        //para seleccionar personaje
         charselec = PlayerPrefs.GetInt("CharacterSelected");
         if (charselec == 1)
         {
