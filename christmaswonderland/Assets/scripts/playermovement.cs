@@ -86,7 +86,8 @@ public class playermovement : MonoBehaviour
         {
             transform.localScale = scalet;
         }
-        move = new Vector3(horizontal, yspeed, vertical);
+        move = new Vector3(vertical, yspeed, -horizontal);
+        
         
         //animation
         if(horizontal != 0f)

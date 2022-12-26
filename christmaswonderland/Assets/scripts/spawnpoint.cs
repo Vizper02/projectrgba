@@ -10,7 +10,7 @@ public class spawnpoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(ch, transform.position, Quaternion.Euler(45,0,0));
+        Instantiate(ch, transform.position, Quaternion.Euler(45,90,0));
     }
 
 }
