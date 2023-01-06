@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 8092435614411053380}
   - component: {fileID: -924262565974922851}
   - component: {fileID: 2094369752624191452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: candy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6918997478984327723
 Transform:
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7732371738660403345}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -123,5 +123,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9562887, y: 6.5075564, z: 3.2531328}
-  m_Center: {x: -0.008369505, y: 3.2517717, z: 0.8551602}
+  m_Size: {x: 0.9562887, y: 6.5075564, z: 1.0687714}
+  m_Center: {x: -0.008369505, y: 3.2517717, z: -0.05998993}

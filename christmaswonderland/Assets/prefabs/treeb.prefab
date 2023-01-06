@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 9041289602075412997}
   - component: {fileID: 3044162418325363721}
   - component: {fileID: 7084210784736526009}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: treeb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7868404418054238570
 Transform:
