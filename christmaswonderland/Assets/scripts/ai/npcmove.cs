@@ -16,7 +16,7 @@ public class npcmove : MonoBehaviour
     public float timedelay;
     float randomZ;
     float randomX;
-    Vector3 initpos;
+    public Vector3 initpos;
     bool walkpointset = false;
 
     //variables para anim 
@@ -41,6 +41,8 @@ public class npcmove : MonoBehaviour
         //
     }
 
+
+
     // Update is called once per frame
     void Update()
     {   
@@ -58,8 +60,15 @@ public class npcmove : MonoBehaviour
         }
         //
 
+        /*
+        if (sprite == null) Debug.Log("Sprite doesn't exists");
+        else Debug.Log("Sprite exists");
+        if (anim == null) Debug.Log("Anim doesn't exists");
+        else Debug.Log("Anim exists");*/
+
         //para anim
         dif = transform.position - lastpos;
+
         if (dif.z > 0)
         {
             lastpos = transform.position;

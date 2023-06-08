@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class playermovement : MonoBehaviour
@@ -27,6 +28,18 @@ public class playermovement : MonoBehaviour
     private float yspeed = 0f;
     private Vector3 scalet;
 
+    //when attacked
+    [SerializeField] private Vector3 attackdir = new Vector3(0,0,0);
+    //public float attackpower = 1f;
+    bool attacked = false;
+    bool resetAtk = false;
+    public byte life = 3;
+    public bool dead = false;
+    public Canvas canvas;
+    PanelScript gOver;
+    //float time = 0f;
+    //public float atktimedelay = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,9 +47,13 @@ public class playermovement : MonoBehaviour
 
         scalet = transform.localScale;
 
+        canvas = FindObjectOfType<Canvas>();
+        gOver = canvas.GetComponentInChildren<PanelScript>(true);
+
         //para seleccionar personaje
         speed = PlayerPrefs.GetFloat("speed");
         charselec = PlayerPrefs.GetInt("CharacterSelected");
+      
         if (charselec == 1)
         {
             this.GetComponent<Animator>().runtimeAnimatorController = anim1 as RuntimeAnimatorController;
@@ -62,32 +79,62 @@ public class playermovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-
-        //jumping
-        if (characterController.isGrounded)
+        if (!dead)
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                yspeed = jumpspeed;
-            }
-        } else
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+        }
+        else
         {
-            yspeed += Physics.gravity.y * Time.deltaTime;
+            horizontal=0;
+            vertical=0;
         }
 
+        
+
         //applymovement
-        if(horizontal < 0f)
+        if(horizontal < 0f)//to flip sprite
         {
             transform.localScale = new Vector3(-scalet.x, scalet.y, scalet.z);
         }else if(horizontal > 0f)
         {
             transform.localScale = scalet;
         }
-        move = new Vector3(vertical, yspeed, -horizontal);
-        
+
+        if(!attacked)
+        {
+            move = new Vector3(vertical, yspeed, -horizontal);//key statement referenced on FixedUpdate()
+        } 
+        else
+        {
+            //move = attackdir;
+            //Debug.Log("entered");
+            move = new Vector3(attackdir.x, yspeed, attackdir.z);
+
+        }
+
+        //jumping
+        if (characterController.isGrounded)
+        {
+            if (Input.GetButtonDown("Jump")&&!dead)
+            {
+                yspeed = jumpspeed;
+            }
+            if (resetAtk)
+            {
+                attacked = false;
+                resetAtk = false;
+            }
+        } else
+        {
+            yspeed += Physics.gravity.y * Time.deltaTime;
+            if (attacked)
+            {
+                resetAtk = true;
+            }
+        }
         
         //animation
         if(horizontal != 0f)
@@ -119,12 +166,34 @@ public class playermovement : MonoBehaviour
             animator.SetFloat("blend", 0);
         }
 
-
+        if(life <= 0)
+        {
+            //Debug.Log("I am dead");
+            dead = true;
+            life = 1;
+            gOver.enable();
+        }
     }
 
-    
+
     void FixedUpdate()
     {
         characterController.Move(move*Time.deltaTime*speed);
+    }
+
+    public void setYSpeed(float yspeed)
+    {
+        this.yspeed = yspeed;
+    }
+
+    public void setAttackDir(float x, float z)
+    {
+        this.attackdir.x = x;
+        this.attackdir.z = z;
+    }
+
+    public void setAttacked(bool attacknew)
+    {
+        this.attacked = attacknew;
     }
 }
