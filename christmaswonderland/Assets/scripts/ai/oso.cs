@@ -59,7 +59,7 @@ public class oso : MonoBehaviour
         //
     }
 
-    private void awake()
+    private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         //initpos = this.transform.position;
@@ -183,7 +183,5 @@ public class oso : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, attackrange);
-        Gizmos.DrawSphere(walkpoint, 1);
     }
 }

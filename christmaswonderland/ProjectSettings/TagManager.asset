@@ -6,6 +6,7 @@ TagManager:
   tags:
   - enemy
   - canva
+  - iceCube
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - tree
   - movable
   - player
-  - 
+  - postProcessing
   - 
   - 
   - 

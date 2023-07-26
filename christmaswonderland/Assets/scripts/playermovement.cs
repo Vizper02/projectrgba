@@ -25,20 +25,33 @@ public class playermovement : MonoBehaviour
     private float vertical = 0f;
     private bool ch = false; 
     private bool cv = false;
+
+    //for gravity and jumping
     private float yspeed = 0f;
+    private bool hasGravity = false;
+    private bool hadGravity = false;
+    [SerializeField]private float time = 0f;
+    public float timeDelayYReset;
+    public float yspeedReset = -.1f;
+    //
+
+    //for water
+    bool inWater = false;
+    public float waterGrav = -1.5f;
+    public float uWatVelMaxP = -2f;
+    public float watDensity;
+    //
+
     private Vector3 scalet;
 
     //when attacked
     [SerializeField] private Vector3 attackdir = new Vector3(0,0,0);
-    //public float attackpower = 1f;
     bool attacked = false;
     bool resetAtk = false;
     public byte life = 3;
     public bool dead = false;
     public Canvas canvas;
     PanelScript gOver;
-    //float time = 0f;
-    //public float atktimedelay = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -109,15 +122,27 @@ public class playermovement : MonoBehaviour
         } 
         else
         {
-            //move = attackdir;
-            //Debug.Log("entered");
             move = new Vector3(attackdir.x, yspeed, attackdir.z);
-
         }
 
-        //jumping
-        if (characterController.isGrounded)
+        //jumping and gravity
+        if (characterController.isGrounded&&!inWater)
         {
+            hasGravity = false;
+            if (hadGravity)
+            {
+                if (time < timeDelayYReset)
+                {
+                    time = time + 1f * Time.deltaTime;
+                }
+                else
+                {
+                    yspeed = yspeedReset;
+                    time = 0f;
+                    hadGravity = false;
+                }
+            }
+
             if (Input.GetButtonDown("Jump")&&!dead)
             {
                 yspeed = jumpspeed;
@@ -127,14 +152,24 @@ public class playermovement : MonoBehaviour
                 attacked = false;
                 resetAtk = false;
             }
-        } else
+        } else if (!inWater)
         {
-            yspeed += Physics.gravity.y * Time.deltaTime;
+            hasGravity = true;
+            hadGravity = true;
             if (attacked)
             {
                 resetAtk = true;
             }
         }
+        //when entering Water
+        else
+        {
+            if (Input.GetButtonDown("Jump") && !dead)
+            {
+                yspeed = jumpspeed;
+            }
+        }
+      
         
         //animation
         if(horizontal != 0f)
@@ -168,19 +203,60 @@ public class playermovement : MonoBehaviour
 
         if(life <= 0)
         {
-            //Debug.Log("I am dead");
             dead = true;
             life = 1;
             gOver.enable();
         }
+        
     }
-
 
     void FixedUpdate()
     {
+        if (hasGravity&&!inWater) 
+        {
+            yspeed += Physics.gravity.y * Time.deltaTime;
+        }
+        else if (inWater)
+        {
+            if (yspeed > uWatVelMaxP) yspeed += waterGrav * Time.deltaTime;
+            else yspeed += (uWatVelMaxP-yspeed)*Time.deltaTime*watDensity;
+        }
+
         characterController.Move(move*Time.deltaTime*speed);
     }
 
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    //for water
+    public void setWaterMode(bool water)
+    {
+        inWater = water;
+    }
+
+    public float getSpeed()
+    {
+        return speed;
+    }
+    
+    public void setSpeed(float sp)
+    {
+        speed = sp;
+    }
+    //
+
+
+    //for bear attacks
     public void setYSpeed(float yspeed)
     {
         this.yspeed = yspeed;
@@ -196,4 +272,5 @@ public class playermovement : MonoBehaviour
     {
         this.attacked = attacknew;
     }
+    //
 }
