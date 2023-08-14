@@ -43,7 +43,8 @@ public class playermovement : MonoBehaviour
     //
 
     //for pickUps
-    private short pickUpCount = 0;
+    public short pickUpCount = 0;
+    //
 
     private Vector3 scalet;
 
@@ -54,7 +55,7 @@ public class playermovement : MonoBehaviour
     public byte life = 3;
     public bool dead = false;
     public Canvas canvas;
-    PanelScript gOver;
+    PanelScript finalPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +65,7 @@ public class playermovement : MonoBehaviour
         scalet = transform.localScale;
 
         canvas = FindObjectOfType<Canvas>();
-        gOver = canvas.GetComponentInChildren<PanelScript>(true);
+        finalPanel = canvas.GetComponentInChildren<PanelScript>(true);
 
         //para seleccionar personaje
         speed = PlayerPrefs.GetFloat("speed");
@@ -208,9 +209,17 @@ public class playermovement : MonoBehaviour
         {
             dead = true;
             life = 1;
-            gOver.enable();
+            finalPanel.enable();
+            finalPanel.setTextColor(false);
         }
         
+        if(pickUpCount >= 100)
+        {
+            dead = true;
+            pickUpCount = 0;
+            finalPanel.enable();
+            finalPanel.setTextColor(true);
+        }
     }
 
     void FixedUpdate()
