@@ -42,6 +42,9 @@ public class playermovement : MonoBehaviour
     public float watDensity;
     //
 
+    //for pickUps
+    private short pickUpCount = 0;
+
     private Vector3 scalet;
 
     //when attacked
@@ -271,6 +274,23 @@ public class playermovement : MonoBehaviour
     public void setAttacked(bool attacknew)
     {
         this.attacked = attacknew;
+    }
+    //
+
+    //for Pick Ups
+    public void increasePickUps(float speedIncrease)
+    {
+        pickUpCount++;
+        StartCoroutine(speedTimer(speedIncrease));
+    }
+
+    IEnumerator speedTimer(float speedIncrease)
+    {
+        speed *= speedIncrease;
+        Debug.Log(speed);
+        yield return new WaitForSeconds((float)2.5);
+        speed /= speedIncrease;
+        Debug.Log(speed);
     }
     //
 }
