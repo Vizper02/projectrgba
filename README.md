@@ -1,2 +1,2 @@
 # projectrgba
-projecto para nuestro juego
+proyecto para nuestro juego de navidad
