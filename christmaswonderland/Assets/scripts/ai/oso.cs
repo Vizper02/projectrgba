@@ -9,6 +9,7 @@ public class oso : MonoBehaviour
     private GameObject player=null;
     public LayerMask whatisplayer;
     private playermovement pcont=null;
+    //private CharacterScript 
 
     //patrolling
     bool patrolling = true;
@@ -79,7 +80,8 @@ public class oso : MonoBehaviour
         if (player == null)
         {
             player = GameObject.FindWithTag("Player");
-            pcont = player.GetComponent<playermovement>(); //reference to player script
+            if(player.GetComponent<playermovement>()!=null) pcont = player.GetComponent<playermovement>(); //reference to player script
+            //else if(player.GetComponent<CharacterScript>()!=null)
         }
         
         //to get change in position and to get direction

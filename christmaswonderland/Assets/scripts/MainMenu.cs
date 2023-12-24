@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
 
   public void Exit()
     {
-        Debug.Log("Exiting...");
         Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }

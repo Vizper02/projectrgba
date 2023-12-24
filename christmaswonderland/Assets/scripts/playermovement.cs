@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class playermovement : MonoBehaviour
 {
@@ -15,16 +16,18 @@ public class playermovement : MonoBehaviour
     public RuntimeAnimatorController anim4;
     public RuntimeAnimatorController anim5;
     public RuntimeAnimatorController anim6;
+    private Vector3 scalet;
     
-    private int charselec = 1;
+    
     public float speed;
     public float jumpspeed = 5f;
-    [SerializeField]
-    private Vector3 move;
+    public FloatingJoystick joystick; 
+    [SerializeField] private Vector3 move;
     private float horizontal = 0f;
     private float vertical = 0f;
     private bool ch = false; 
     private bool cv = false;
+    private int charselec = 1;
 
     //for gravity and jumping
     private float yspeed = 0f;
@@ -46,30 +49,41 @@ public class playermovement : MonoBehaviour
     public short pickUpCount = 0;
     //
 
-    private Vector3 scalet;
+    
 
     //when attacked
     [SerializeField] private Vector3 attackdir = new Vector3(0,0,0);
     bool attacked = false;
     bool resetAtk = false;
-    public byte life = 3;
+    public byte life = 1;
     public bool dead = false;
     public Canvas canvas;
+
+    //UI
     PanelScript finalPanel;
+    GameObject fJoy;
+    GameObject pauseButton;
+    bool isPause = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        Time.timeScale = 1f;
 
         scalet = transform.localScale;
 
         canvas = FindObjectOfType<Canvas>();
         finalPanel = canvas.GetComponentInChildren<PanelScript>(true);
 
+        joystick = canvas.GetComponentInChildren<FloatingJoystick>(true);
+        fJoy = canvas.transform.GetChild(1).gameObject;
+        pauseButton = canvas.transform.GetChild(2).gameObject;
+
         //para seleccionar personaje
         speed = PlayerPrefs.GetFloat("speed");
         charselec = PlayerPrefs.GetInt("CharacterSelected");
+
       
         if (charselec == 1)
         {
@@ -93,26 +107,40 @@ public class playermovement : MonoBehaviour
 
     }
 
+    void Awake() {
+        isPause = false;
+        characterController = this.GetComponent<CharacterController>();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
 
-        if (!dead)
+        if (!dead && !isPause)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
+            if (joystick != null)
+            {
+                if (joystick.Horizontal > .9) horizontal = 1;
+                else if (joystick.Horizontal < -.9) horizontal = -1;
+                else horizontal = joystick.Horizontal;
+                if (joystick.Vertical > .9) vertical = 1;
+                else if (joystick.Vertical < -.9) vertical = -1;
+                else vertical = joystick.Vertical;
+            }
         }
-        else
+        else if(dead)//case I am dead
         {
-            horizontal=0;
-            vertical=0;
+            horizontal = 0;
+            vertical = 0;
+            if (fJoy != null) fJoy.SetActive(false); //disabling joystick when dead
         }
 
         
 
-        //applymovement
-        if(horizontal < 0f)//to flip sprite
+        //to flip sprite
+        if(horizontal < 0f)
         {
             transform.localScale = new Vector3(-scalet.x, scalet.y, scalet.z);
         }else if(horizontal > 0f)
@@ -120,6 +148,7 @@ public class playermovement : MonoBehaviour
             transform.localScale = scalet;
         }
 
+        //to apply movement
         if(!attacked)
         {
             move = new Vector3(vertical, yspeed, -horizontal);//key statement referenced on FixedUpdate()
@@ -147,10 +176,20 @@ public class playermovement : MonoBehaviour
                 }
             }
 
-            if (Input.GetButtonDown("Jump")&&!dead)
+            //jumping
+            if (Input.GetButtonDown("Jump")&&!dead&&!isPause)
             {
                 yspeed = jumpspeed;
             }
+            for (int i = 0; i < Input.touchCount&&!dead&&!isPause; i++) {
+                Touch touch = Input.GetTouch(i);
+                float xPos = touch.position.x, yPos = touch.position.y;
+                bool pauseZone = false;
+                if (xPos > (float)(Screen.width * .92) && yPos > (float)(Screen.height * .8)) pauseZone = true;
+                if (xPos > (float)(Screen.width * .6)&&!pauseZone) yspeed = jumpspeed;
+            }
+            //
+
             if (resetAtk)
             {
                 attacked = false;
@@ -168,9 +207,18 @@ public class playermovement : MonoBehaviour
         //when entering Water
         else
         {
-            if (Input.GetButtonDown("Jump") && !dead)
+            if (Input.GetButtonDown("Jump") && !dead&&!isPause)
             {
                 yspeed = jumpspeed;
+            }
+
+            for (int i = 0; i < Input.touchCount && !dead; i++)
+            {
+                Touch touch = Input.GetTouch(i);
+                float xPos = touch.position.x, yPos = touch.position.y;
+                bool pauseZone = false;
+                if (xPos > (float)(Screen.width * .92) && yPos > (float)(Screen.height * .8)) pauseZone = true;
+                if (xPos > (float)(Screen.width * .6) && !pauseZone) yspeed = jumpspeed;
             }
         }
       
@@ -204,7 +252,7 @@ public class playermovement : MonoBehaviour
         {
             animator.SetFloat("blend", 0);
         }
-
+        
         if(life <= 0)
         {
             dead = true;
@@ -217,6 +265,7 @@ public class playermovement : MonoBehaviour
         {
             dead = true;
             pickUpCount = 0;
+            pauseButton.SetActive(false);
             finalPanel.enable();
             finalPanel.setTextColor(true);
         }
@@ -224,9 +273,10 @@ public class playermovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (hasGravity&&!inWater) 
         {
-            yspeed += Physics.gravity.y * Time.deltaTime;
+            yspeed += Physics.gravity.y * Time.deltaTime;//applying gravity
         }
         else if (inWater)
         {
@@ -234,7 +284,7 @@ public class playermovement : MonoBehaviour
             else yspeed += (uWatVelMaxP-yspeed)*Time.deltaTime*watDensity;
         }
 
-        characterController.Move(move*Time.deltaTime*speed);
+        characterController.Move(move*Time.deltaTime*speed);//apply movement
     }
 
 
@@ -245,9 +295,18 @@ public class playermovement : MonoBehaviour
 
 
 
-    
 
 
+
+
+    //for UI, (pause function is in PauseScript)
+    public void setIsPause(bool val) {
+        this.isPause = val;
+    }
+    public bool getIsPause() {
+        return isPause;
+    }
+    //
 
 
     //for water
@@ -293,13 +352,16 @@ public class playermovement : MonoBehaviour
         StartCoroutine(speedTimer(speedIncrease));
     }
 
+    public void speedBoost(float speedIncrease)
+    {
+        StartCoroutine(speedTimer(speedIncrease));
+    }
+
     IEnumerator speedTimer(float speedIncrease)
     {
-        speed *= speedIncrease;
-        Debug.Log(speed);
-        yield return new WaitForSeconds((float)2.5);
-        speed /= speedIncrease;
-        Debug.Log(speed);
+        speed += speedIncrease;
+        yield return new WaitForSeconds((float)3);
+        speed -= speedIncrease;
     }
     //
 }

@@ -37,14 +37,14 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _alpha: 0.6
+    - _alpha: 0.7
     - _foamOffset: 5.72
-    - _rippleDissolve: 4.14
-    - _rippleScale: 40
-    - _rippleSpeed: 0.75
+    - _rippleDissolve: 3
+    - _rippleScale: 63.8
+    - _rippleSpeed: 2.53
     - _transparency: 3.62
     m_Colors:
     - _baseColor: {r: 0, g: 0.488204, b: 1, a: 1}
     - _foamColor: {r: 0.57434916, g: 0.57434916, b: 0.57434916, a: 0}
-    - _rippleColor: {r: 0.6897472, g: 0.83986604, b: 0.9433962, a: 1}
+    - _rippleColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

@@ -196,9 +196,9 @@ CharacterController:
   m_Height: 7
   m_Radius: 2
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.01
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!212 &176790088392433941
 SpriteRenderer:
@@ -293,6 +293,7 @@ MonoBehaviour:
   anim6: {fileID: 22100000, guid: 5b68f8a38e4a1db40a9907ed72fd6388, type: 2}
   speed: 5
   jumpspeed: 2
+  joystick: {fileID: 0}
   move: {x: 0, y: 0, z: 0}
   time: 0
   timeDelayYReset: 0.7
@@ -300,8 +301,9 @@ MonoBehaviour:
   waterGrav: -10
   uWatVelMaxP: -1.3
   watDensity: 2
+  pickUpCount: 0
   attackdir: {x: 0, y: 0, z: 0}
-  life: 3
+  life: 1
   dead: 0
   canvas: {fileID: 0}
 --- !u!114 &5572163700778342352

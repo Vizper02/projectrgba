@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CandyScript : MonoBehaviour
 {
-
+    public float speedIncrease;
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -12,11 +12,8 @@ public class CandyScript : MonoBehaviour
             playermovement player = other.gameObject.GetComponent<playermovement>();
             if(player != null)
             {
-                if(player.life < 3)
-                {
-                    player.life++;
-                    Destroy(gameObject);
-                }
+                player.speedBoost(speedIncrease);
+                Destroy(gameObject);
             }
         }
     }

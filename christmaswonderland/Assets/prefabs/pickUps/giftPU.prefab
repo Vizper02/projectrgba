@@ -64,7 +64,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1a6095a1ed9361f46a0e219fe3ffe418, type: 3}
   - {fileID: 21300000, guid: 9338fd7b077c1e645867de34ae1639df, type: 3}
   - {fileID: 21300000, guid: e7d5d6dc958caa140b807af894aa8e1f, type: 3}
-  speedIncrease: 1.2
+  speedIncrease: 3
 --- !u!1 &2390828511034512476
 GameObject:
   m_ObjectHideFlags: 0

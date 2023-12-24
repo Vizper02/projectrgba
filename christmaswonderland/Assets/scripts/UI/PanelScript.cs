@@ -10,10 +10,32 @@ public class PanelScript : MonoBehaviour
     private GameObject text;
     private TextMeshProUGUI textMesh;
     private Color tempColor;
+    GameObject joystick;
+    GameObject playerObj;
+    GameObject resumeButton;
+    playermovement player;
+
+
+    void Start() {
+        resumeButton = gameObject.transform.GetChild(2).gameObject;
+        joystick = transform.parent.transform.GetChild(1).gameObject;
+    }
+
+    void Update() {
+        if (playerObj == null) {
+            playerObj = GameObject.FindWithTag("Player");
+            player = playerObj.GetComponent<playermovement>();
+        }
+    }
 
     public void enable()
     {
         gameObject.SetActive(true);
+    }
+
+    public void disable()
+    {
+        gameObject.SetActive(false);
     }
 
     public void setTextColor(bool alive)
@@ -40,6 +62,15 @@ public class PanelScript : MonoBehaviour
                 textMesh.color = tempColor;
             }
         }
+    }
+
+    public void resumeGame()
+    {
+        if (joystick != null) joystick.SetActive(true);
+        if (resumeButton != null) resumeButton.SetActive(false);
+        Time.timeScale = 1f;
+        if (player != null) player.setIsPause(false);
+        disable();
     }
 
     public void restart()
