@@ -1,2 +1,2 @@
 # projectrgba
-proyecto para nuestro juego de navidad
+Unity video-game project about Christmas
